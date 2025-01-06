@@ -6,9 +6,9 @@ include 'components/sidebar.php';
     .page {
         margin-left: 0; 
         padding: 20px;
-        background-image: url(''); 
+        background-image: url('assets/image/3040791.jpg'); 
         background-size: cover;
-        background-repeat: no-repeat;
+        background-repeat: repeat;
         height: 100vh;
         position: absolute; 
         left: 250px;
