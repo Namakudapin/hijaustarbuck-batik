@@ -36,9 +36,10 @@
 <div class="sidebar">
     <h2>Menu</h2>
     <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Service</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="/views/service/service.php">Service</a></li>
+        <li><a href="/views/billing/billing.php">Billing</a></li>
+        <li><a href="/views/info/info.php">Info</a></li>
+        <li><a href="#">Upgrade</a></li>
     </ul>
 </div>
+

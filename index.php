@@ -1,3 +1,3 @@
 <?php
-include 'views/service/service.php';
+include 'views/info/info.php';
 ?>
