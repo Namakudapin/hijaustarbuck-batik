@@ -9,6 +9,7 @@
         position: fixed;
         top: 0;
         left: 0;
+        font-family: 'Futura', sans-serif; /* Menambahkan font Futura */
     }
 
     .sidebar ul {
@@ -30,6 +31,7 @@
         text-decoration: underline;
     }
 </style>
+
 
 <div class="sidebar">
     <h2>Menu</h2>
