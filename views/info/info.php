@@ -12,17 +12,16 @@ require_once __DIR__ . '/../../components/sidebar.php';
     }
 
     .page {
-            margin-left: 0;
-            padding: 20px;
-            background-image: url('/assets/image/3040791.jpg');
-            background-size: cover;
-            background-repeat: repeat;
-            height: 100vh;
-            position: absolute;
-            left: 250px;
-            top: 0;
-            right: 0;
-        }
+    margin-left: 250px; /* Match sidebar width */
+    padding: 20px;
+    background-image: url('/assets/image/3040791.jpg');
+    background-size: cover;
+    background-repeat: repeat;
+    min-height: 100vh; /* Changed from height to min-height */
+    position: relative; /* Changed from absolute */
+    top: 0;
+    right: 0;
+}
 
     .articles-section {
         padding: 2rem;
@@ -158,6 +157,8 @@ require_once __DIR__ . '/../../components/sidebar.php';
 </style>
 
 <div class="page">
+<div class="container py-5">
+
     <section class="articles-section">
         <div class="articles-container">
             <div class="articles-header">
@@ -178,6 +179,7 @@ require_once __DIR__ . '/../../components/sidebar.php';
                     </div>
                 </article>
             </div>
+        </div>
         </div>
     </section>
 </div>
