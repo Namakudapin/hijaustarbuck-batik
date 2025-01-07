@@ -37,9 +37,10 @@ class AuthController
         $result = $this->authModel->registerUser($email, $username, $password, $password_confirm);
 
         if ($result === true) {
-            echo "Registrasi berhasil!";
+            header("Location: /views/login/login.php");
+            exit;
         } else {
-            echo $result;
+            echo "<script>alert('$result');</script>";
         }
     }
 

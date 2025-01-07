@@ -38,8 +38,9 @@ class AuthModel {
         return false;
     }
 
-    public function registerUser($email, $username, $password, $password_confirm ) {
-        if (empty($email) || empty($username) || empty($password) ) {
+    public function registerUser($email, $username, $password, $password_confirm)
+    {
+        if (empty($email) || empty($username) || empty($password) || empty($password_confirm)) {
             return "Semua field harus diisi!";
         }
 
@@ -51,19 +52,21 @@ class AuthModel {
             return "Password minimal 6 karakter!";
         }
 
-        if ($password === $password_confirm) {
-            $result = $this->getUserByEmail($email);
-            if (mysqli_num_rows($result) > 0) {
-                return "Email sudah terdaftar!";
-            } else {
-                if ($this->createUser($email, $username, $password )) {
-                    return "Pendaftaran berhasil, silakan login!";
-                } else {
-                    return "Terjadi kesalahan saat pendaftaran!";
-                }
-            }
+        if ($password !== $password_confirm) {
+            return "Password dan konfirmasi password tidak cocok!";
+        }
+
+        $result = $this->getUserByEmail($email);
+        if ($result->num_rows > 0) {
+            return "Email sudah terdaftar!";
+        }
+
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+        if ($this->createUser($email, $username, $hashedPassword)) {
+            return true;
         } else {
-            return "Password tidak cocok!";
+            return "Terjadi kesalahan saat pendaftaran!";
         }
     }
 }
