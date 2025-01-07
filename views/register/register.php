@@ -1,3 +1,12 @@
+<?php
+require_once dirname(__FILE__) . '/../../controllers/AuthController.php';
+
+$authController = new AuthController();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $authController->register();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +31,7 @@
 
                 <div class="field input">
                     <label for="email">Email</label>
-                    <input type="text" name="email" id="email" autocomplete="off" required>
+                    <input type="email" name="email" id="email" autocomplete="off" required>
                 </div>
 
                 <div class="field input">
@@ -30,8 +39,13 @@
                     <input type="password" name="password" id="password" autocomplete="off" required>
                 </div>
 
+                <div class="field input">
+                    <label for="password_confirm">Konfirmasi Kata sandi</label>
+                    <input type="password" name="password_confirm" id="password_confirm" autocomplete="off" required>
+                </div>
+
                 <div class="field">
-                    <input type="submit" class="btn" name="submit" value="Daftar" required>
+                    <input type="submit" class="btn" name="submit" value="Daftar">
                 </div>
                 <div class="links">
                     Sudah mempunyai akun? <a href="/views/login/login.php">Masuk</a>
