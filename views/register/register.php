@@ -34,7 +34,7 @@
                     <input type="submit" class="btn" name="submit" value="Daftar" required>
                 </div>
                 <div class="links">
-                    Sudah mempunyai akun? <a href="/views/login/login.php">Login</a>
+                    Sudah mempunyai akun? <a href="/views/login/login.php">Masuk</a>
                 </div>
             </form>
         </div>

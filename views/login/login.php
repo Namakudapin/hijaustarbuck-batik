@@ -1,3 +1,17 @@
+<?php
+
+session_start();
+
+require_once dirname(__FILE__) . '/../../controllers/AuthController.php';
+
+
+$authController = new AuthController();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $authController->login();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
