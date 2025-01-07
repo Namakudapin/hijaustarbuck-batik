@@ -3,7 +3,7 @@
 
 class AdminModel{
 
-    public function getUserByEmail($email) {
+    public function getAdminByEmail($email) {
         global $conn;
         $query = "SELECT * FROM admins WHERE email = ?";
         $stmt = mysqli_prepare($conn, $query);
@@ -13,7 +13,7 @@ class AdminModel{
     }
 
 
-    public function createUser($email, $username, $password) {
+    public function createAdmin($email, $username, $password) {
         global $conn;
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         $created_at = date("Y-m-d H:i:s");
@@ -28,8 +28,8 @@ class AdminModel{
         return mysqli_stmt_execute($stmt);
     }
 
-    public function loginUser($email, $password) {
-        $result = $this->getUserByEmail($email);
+    public function loginAdmin($email, $password) {
+        $result = $this->getAdminByEmail($email);
         if (mysqli_num_rows($result) > 0) {
             $admin = mysqli_fetch_assoc($result);
             if (password_verify($password, $admin['password'])) {
@@ -39,7 +39,7 @@ class AdminModel{
         return false;
     }
 
-    public function registerUser($email, $username, $password, $password_confirm,) {
+    public function registerAdmin($email, $username, $password, $password_confirm,) {
         if (empty($email) || empty($username) || empty($password)) {
             return "Semua field harus diisi!";
         }
@@ -53,11 +53,11 @@ class AdminModel{
         }
 
         if ($password === $password_confirm) {
-            $result = $this->getUserByEmail($email);
+            $result = $this->getAdminByEmail($email);
             if (mysqli_num_rows($result) > 0) {
                 return "Email sudah terdaftar!";
             } else {
-                if ($this->createUser($email, $username, $password)) {
+                if ($this->createAdmin($email, $username, $password)) {
                     return "Pendaftaran berhasil, silakan login!";
                 } else {
                     return "Terjadi kesalahan saat pendaftaran!";
