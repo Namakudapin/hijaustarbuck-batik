@@ -1,4 +1,5 @@
 <?php
+include dirname(__DIR__) . '/services/services.php';
 //File : models/PaketModel.php
 
 class PaketModel
@@ -11,16 +12,16 @@ class PaketModel
         return $result;
     }
 
-    public function GetById($id)
-    {
-        global $conn;
-        $query = "SELECT * FROM paket_domains WHERE id = ?";
-        $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, "i", $id);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-        return $result;
-    }
+        public function GetById($id)
+        {
+            global $conn;
+            $query = "SELECT * FROM paket_domains WHERE id = ?";
+            $stmt = mysqli_prepare($conn, $query);
+            mysqli_stmt_bind_param($stmt, "i", $id);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            return $result;
+        }
 
     public function CreatePaket($title, $image, $price, $description, $size, $bandwidth, $created_at, $updated_at)
     {

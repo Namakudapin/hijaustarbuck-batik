@@ -20,9 +20,9 @@ class NewsController
         while ($row = mysqli_fetch_assoc($news)) {
             $data[] = $row;
         }
-        echo json_encode($data);
+        return json_encode($data); // Return the JSON-encoded string
     }
-
+    
     // Get news by ID
     public function show($id)
     {
