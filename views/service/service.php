@@ -3,8 +3,10 @@
 session_start();
 
 // Ensure user is logged in
-if (!isset($_SESSION['user_id'])) {
-    die("Error: User not logged in.");
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user']) || empty($_SESSION['user'])) {
+    // If not logged in, redirect to login page
+    header('Location: /views/login/login.php');
+    exit();
 }
 
 require_once __DIR__ . '/../../components/sidebar.php';
@@ -23,6 +25,7 @@ $paketUsers = json_decode($paketUsersJson, true);
 echo "<pre style='display:none;'>";
 echo "Session data: ";
 var_dump($_SESSION);
+echo "User ID: " . $_SESSION['user_id']; // Display the user ID for debugging
 echo "JSON received: " . $paketUsersJson;
 echo "Decoded data: ";
 var_dump($paketUsers);

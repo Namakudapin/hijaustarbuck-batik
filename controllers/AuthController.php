@@ -27,9 +27,9 @@ class AuthController
         $user = $this->authModel->loginUser($email, $password);
 
         if ($user) {
-            // Pastikan session diatur dengan benar
+            // Menyimpan user_id dan data lengkap user ke session
             $_SESSION['user_id'] = $user['id']; // Simpan user_id untuk otentikasi
-            $_SESSION['user'] = $user; // Data lengkap user jika diperlukan
+            $_SESSION['user'] = $user; // Simpan data lengkap user jika diperlukan
             $_SESSION['success'] = "Login successful!";
             header('Location: /views/service/service.php'); // Redirect ke halaman utama
             exit();
@@ -39,7 +39,6 @@ class AuthController
             exit();
         }
     }
-
 
     public function register()
     {
