@@ -1,5 +1,7 @@
 <?php
 // File: models/AuthModel.php
+include dirname(__DIR__) . '/services/services.php';
+
 
 class AuthModel {
     public function getUserByEmail($email) {

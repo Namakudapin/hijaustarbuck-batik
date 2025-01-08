@@ -3,15 +3,19 @@
 include dirname(__DIR__) . '/services/services.php';
 include dirname(__DIR__) . '/models/AuthModel.php';
 
-class AuthController {
+class AuthController
+{
     private $authModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->authModel = new AuthModel();
     }
 
-    public function login() {
-        // Validate input
+    public function login()
+    {
+        session_start(); // Pindahkan ini ke atas
+        // Validasi input
         if (!isset($_POST['email']) || !isset($_POST['password'])) {
             $_SESSION['error'] = "Please fill in all fields";
             return false;
@@ -23,21 +27,26 @@ class AuthController {
         $user = $this->authModel->loginUser($email, $password);
 
         if ($user) {
-            $_SESSION['user'] = $user;
+            // Menyimpan user_id dan data lengkap user ke session
+            $_SESSION['user_id'] = $user['id']; // Simpan user_id untuk otentikasi
+            $_SESSION['user'] = $user; // Simpan data lengkap user jika diperlukan
             $_SESSION['success'] = "Login successful!";
-            header('Location: views/service/service.php');
+            header('Location: /views/service/service.php'); // Redirect ke halaman utama
             exit();
         } else {
             $_SESSION['error'] = "Invalid email or password";
-            header('Location: /views/login/login.php');
+            header('Location: /views/login/login.php'); // Redirect ke login
             exit();
         }
     }
 
-    public function register() {
+    public function register()
+    {
         // Validate input
-        if (!isset($_POST['email']) || !isset($_POST['username']) || 
-            !isset($_POST['password']) || !isset($_POST['password_confirm'])) {
+        if (
+            !isset($_POST['email']) || !isset($_POST['username']) ||
+            !isset($_POST['password']) || !isset($_POST['password_confirm'])
+        ) {
             $_SESSION['error'] = "Please fill in all fields";
             return false;
         }
@@ -60,7 +69,8 @@ class AuthController {
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         session_start();
         session_destroy();
         header('Location: /views/login/login.php');

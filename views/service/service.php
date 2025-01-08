@@ -2,9 +2,9 @@
 // Start session at the very beginning of the file
 session_start();
 
-// Cek apakah token ada di sesi
-if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
-    // Redirect ke halaman views/service/service.php jika token tidak ada
+// Ensure user is logged in
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user']) || empty($_SESSION['user'])) {
+    // If not logged in, redirect to login page
     header('Location: /views/login/login.php');
     exit();
 }
@@ -12,10 +12,11 @@ if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
 require_once __DIR__ . '/../../components/sidebar.php';
 require_once __DIR__ . '/../../controllers/PaketUserController.php';
 
-// Debug information
+// Enable error reporting for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// Create the controller instance and fetch data
 $controller = new PaketUserController();
 $paketUsersJson = $controller->getPaketUsersByUserId();
 $paketUsers = json_decode($paketUsersJson, true);
@@ -24,7 +25,7 @@ $paketUsers = json_decode($paketUsersJson, true);
 echo "<pre style='display:none;'>";
 echo "Session data: ";
 var_dump($_SESSION);
-echo "User ID: " . $_SESSION['user'];
+echo "User ID: " . $_SESSION['user_id']; // Display the user ID for debugging
 echo "JSON received: " . $paketUsersJson;
 echo "Decoded data: ";
 var_dump($paketUsers);
@@ -61,7 +62,8 @@ echo "</pre>";
         font-family: Arial, sans-serif;
     }
 
-    th, td {
+    th,
+    td {
         padding: 12px;
         text-align: left;
         border-bottom: 1px solid #ddd;
@@ -141,19 +143,25 @@ echo "</pre>";
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($paketUsers as $paket) : ?>
+                <?php if (!empty($paketUsers)): ?>
+                    <?php foreach ($paketUsers as $paket) : ?>
+                        <tr>
+                            <td><?= htmlspecialchars($paket['title']); ?></td>
+                            <td><?= htmlspecialchars($paket['domain']); ?></td>
+                            <td><?= htmlspecialchars($paket['status']); ?></td>
+                            <td><?= date('d/m/Y H:i', strtotime($paket['expired_at'])); ?></td>
+                            <td><?= date('d/m/Y H:i', strtotime($paket['updated_at'])); ?></td>
+                            <td>
+                                <a href="edit.php?id=<?= $paket['id']; ?>" class="action-btn">Edit</a>
+                                <button onclick="deletePaket(<?= $paket['id']; ?>)" class="action-btn">Delete</button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($paket['title']); ?></td>
-                        <td><?php echo htmlspecialchars($paket['domain']); ?></td>
-                        <td><?php echo htmlspecialchars($paket['status']); ?></td>
-                        <td><?php echo date('d/m/Y H:i', strtotime($paket['expired_at'])); ?></td>
-                        <td><?php echo date('d/m/Y H:i', strtotime($paket['updated_at'])); ?></td>
-                        <td>
-                            <a href="edit.php?id=<?php echo $paket['id']; ?>" class="action-btn">Edit</a>
-                            <button onclick="deletePaket(<?php echo $paket['id']; ?>)" class="action-btn">Delete</button>
-                        </td>
+                        <td colspan="6">No data found.</td>
                     </tr>
-                <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
@@ -194,7 +202,9 @@ echo "</pre>";
             $.ajax({
                 url: 'delete.php',
                 type: 'POST',
-                data: { id: id },
+                data: {
+                    id: id
+                },
                 success: function(response) {
                     alert('Package deleted successfully!');
                     location.reload();

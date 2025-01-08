@@ -26,7 +26,6 @@ class PaketController
     public function store()
     {
         $title = $_POST['title'];
-        $image = $_POST['image'];
         $price = $_POST['price'];
         $description = $_POST['description'];
         $size = $_POST['size'];
@@ -34,7 +33,21 @@ class PaketController
         $created_at = date('Y-m-d H:i:s');
         $updated_at = date('Y-m-d H:i:s');
 
-        $result = $this->paketModel->CreatePaket($title, $image, $price, $description, $size, $bandwidth, $created_at, $updated_at);
+        // Handle image upload (optional)
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+            $uploadDir = './public/uploads/';
+            $fileName = uniqid() . '_' . basename($_FILES['image']['name']);
+            $uploadFile = $uploadDir . $fileName;
+
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
+                $imagePath = 'public/uploads/' . $fileName;
+            } else {
+                echo "Failed to upload image.";
+                return;
+            }
+        }
+
+        $result = $this->paketModel->CreatePaket($title, $imagePath, $price, $description, $size, $bandwidth, $created_at, $updated_at);
 
         if ($result === true) {
             header('Location: /');
@@ -52,14 +65,27 @@ class PaketController
     public function update($id)
     {
         $title = $_POST['title'];
-        $image = $_POST['image'];
         $price = $_POST['price'];
         $description = $_POST['description'];
         $size = $_POST['size'];
         $bandwidth = $_POST['bandwidth'];
         $updated_at = date('Y-m-d H:i:s');
 
-        $result = $this->paketModel->UpdatePaket($id, $title, $image, $price, $description, $size, $bandwidth, $updated_at);
+         // Handle image upload (optional)
+         if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+            $uploadDir = './public/uploads/';
+            $fileName = uniqid() . '_' . basename($_FILES['image']['name']);
+            $uploadFile = $uploadDir . $fileName;
+
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
+                $imagePath = 'public/uploads/' . $fileName;
+            } else {
+                echo "Failed to upload image.";
+                return;
+            }
+        }
+
+        $result = $this->paketModel->UpdatePaket($id, $title, $imagePath, $price, $description, $size, $bandwidth, $updated_at);
 
         if ($result === true) {
             header('Location: /');
