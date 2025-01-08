@@ -10,7 +10,7 @@ class PaketUserController
         $this->paketUserModel = new PaketUserModel();
     }
 
-    // Create a new Paket User
+    // Create a new Paket Us    er
     public function createPaketUser()
     {
         $user_id = $_POST['user_id'];
