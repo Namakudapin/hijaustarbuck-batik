@@ -14,7 +14,7 @@ class PaketController
 
     public function index()
     {
-        $paket = $this->paketModel->Getall();
+        $this->paketModel->Getall();
         include dirname(__DIR__) . '/';
     }
 
