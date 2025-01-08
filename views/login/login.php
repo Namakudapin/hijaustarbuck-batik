@@ -1,9 +1,13 @@
 <?php
-
 session_start();
 
-require_once dirname(__FILE__) . '/../../controllers/AuthController.php';
+// If user is already logged in, redirect to service page
+if (isset($_SESSION['user_id'])) {
+    header("Location: /views/service/service.php");
+    exit();
+}
 
+require_once dirname(__FILE__) . '/../../controllers/AuthController.php';
 
 $authController = new AuthController();
 
@@ -11,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $authController->login();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
