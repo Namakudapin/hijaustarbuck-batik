@@ -2,14 +2,6 @@
 
 session_start();
 
-require_once dirname(__FILE__) . '/../../controllers/AuthController.php';
-
-
-$authController = new AuthController();
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $authController->login();
-}
 ?>
 
 <!DOCTYPE html>
@@ -45,8 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="links">
-                Belum mempunyai akun? <a href="/views/register/register.php">Daftar</a><br>
-                Login sebagai admin? <a href="/admin/views/pages/login/login.php">Klik di sini</a>
+                Login sebagai user? <a href="/views/login/login.php">Klik di sini</a>
             </div>
         </form>
 
