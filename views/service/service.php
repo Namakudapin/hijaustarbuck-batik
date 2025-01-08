@@ -2,6 +2,12 @@
 // Start session at the very beginning of the file
 session_start();
 
+// Cek apakah token ada di sesi
+if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
+    // Redirect ke halaman views/service/service.php jika token tidak ada
+    header('Location: /views/login/login.php');
+    exit();
+}
 
 require_once __DIR__ . '/../../components/sidebar.php';
 require_once __DIR__ . '/../../controllers/PaketUserController.php';
@@ -18,7 +24,7 @@ $paketUsers = json_decode($paketUsersJson, true);
 echo "<pre style='display:none;'>";
 echo "Session data: ";
 var_dump($_SESSION);
-echo "User ID: " . $_SESSION['user_id'];
+echo "User ID: " . $_SESSION['user'];
 echo "JSON received: " . $paketUsersJson;
 echo "Decoded data: ";
 var_dump($paketUsers);
