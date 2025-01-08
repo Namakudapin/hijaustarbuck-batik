@@ -55,18 +55,27 @@ class PaketUserController
         $user_id = $_SESSION['user_id'] ?? null;
         
         if (!$user_id) {
+            echo "Debug: No user_id found in session";
             return json_encode([]);
         }
     
         $result = $this->paketUserModel->getPaketUserByUserId($user_id);
-    
+        
+        // Debug: Print the SQL error if any
+        if (!$result) {
+            echo "MySQL Error: " . mysqli_error($GLOBALS['conn']);
+        }
+        
         if ($result && mysqli_num_rows($result) > 0) {
             $paketUsers = [];
             while ($row = mysqli_fetch_assoc($result)) {
                 $paketUsers[] = $row;
             }
+            // Debug: Print the data
+            echo "Debug: Found " . count($paketUsers) . " records";
             return json_encode($paketUsers);
         } else {
+            echo "Debug: No records found";
             return json_encode([]);
         }
     }

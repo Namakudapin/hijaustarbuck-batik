@@ -1,9 +1,28 @@
 <?php
+// Start session at the very beginning of the file
+session_start();
+
+
 require_once __DIR__ . '/../../components/sidebar.php';
 require_once __DIR__ . '/../../controllers/PaketUserController.php';
 
+// Debug information
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 $controller = new PaketUserController();
-$paketUsers = json_decode($controller->getPaketUsersByUserId(), true);
+$paketUsersJson = $controller->getPaketUsersByUserId();
+$paketUsers = json_decode($paketUsersJson, true);
+
+// Debug output
+echo "<pre style='display:none;'>";
+echo "Session data: ";
+var_dump($_SESSION);
+echo "User ID: " . $_SESSION['user_id'];
+echo "JSON received: " . $paketUsersJson;
+echo "Decoded data: ";
+var_dump($paketUsers);
+echo "</pre>";
 ?>
 
 <style>
