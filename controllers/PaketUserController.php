@@ -52,17 +52,22 @@ class PaketUserController
     // Get Paket Users by User ID
     public function getPaketUsersByUserId()
     {
-        $user_id = $_GET['user_id'];
+        $user_id = $_SESSION['user_id'] ?? null;
+        
+        if (!$user_id) {
+            return json_encode([]);
+        }
+    
         $result = $this->paketUserModel->getPaketUserByUserId($user_id);
-
+    
         if ($result && mysqli_num_rows($result) > 0) {
             $paketUsers = [];
             while ($row = mysqli_fetch_assoc($result)) {
                 $paketUsers[] = $row;
             }
-            echo json_encode($paketUsers);
+            return json_encode($paketUsers);
         } else {
-            echo "No Paket Users found for the given User ID.";
+            return json_encode([]);
         }
     }
 

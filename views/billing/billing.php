@@ -1,5 +1,22 @@
 <?php
 require_once __DIR__ . '/../../components/sidebar.php';
+require_once __DIR__ . '/../../controllers/PaketUserController.php';
+
+// Initialize the controller
+$paketUserController = new PaketUserController();
+
+// Get logged in user's ID (assuming you have this in session)
+$user_id = $_SESSION['user_id'] ?? null;
+
+// Get user's paket data using the controller's public method
+$result = $paketUserController->getPaketUsersByUserId();
+$paketUsers = [];
+
+// Check if the response is JSON
+$response = json_decode($result, true);
+if ($response !== null) {
+    $paketUsers = $response;
+}
 ?>
 
 <style>
@@ -26,7 +43,7 @@ require_once __DIR__ . '/../../components/sidebar.php';
         background-color: #5E686D; 
         color: white; 
         border: none; 
-        flex: 1 1 calc(33.333% - 20px); /* Membagi 3 bagian */
+        flex: 1 1 calc(33.333% - 20px);
         max-width: calc(33.333% - 20px);
     }
 
@@ -44,41 +61,64 @@ require_once __DIR__ . '/../../components/sidebar.php';
 
     .row {
         display: flex;
-        flex-wrap: nowrap; /* Tidak akan pindah ke baris baru */
-        justify-content: space-between;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+    .status-active {
+        color: #4ade80;
+    }
+
+    .status-expired {
+        color: #ef4444;
+    }
+
+    .empty-state {
+        text-align: center;
+        color: white;
+        padding: 2rem;
+        background-color: rgba(94, 104, 109, 0.8);
+        border-radius: 8px;
+        margin: 2rem auto;
+        max-width: 600px;
     }
 </style>
 
 <div class="page">
     <div class="container py-5">
-        <div class="row">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Card title</h4>
-                    <h6 class="card-subtitle text-muted">Support card subtitle</h6>
-                    <p class="card-text">Some quick example text to build on the card title.</p>
-                    <a href="#" class="card-link">Link</a>
-                    <a href="#" class="card-link">Second link</a>
-                </div>
+        <?php if (empty($paketUsers)): ?>
+            <div class="empty-state">
+                <h3>No Paket Found</h3>
+                <p>You currently don't have any active paket subscriptions.</p>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Card title</h4>
-                    <h6 class="card-subtitle text-muted">Support card subtitle</h6>
-                    <p class="card-text">Some quick example text to build on the card title.</p>
-                    <a href="#" class="card-link">Link</a>
-                    <a href="#" class="card-link">Second link</a>
-                </div>
+        <?php else: ?>
+            <div class="row">
+                <?php foreach ($paketUsers as $paket): ?>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title"><?php echo htmlspecialchars($paket['title']); ?></h4>
+                            <h6 class="card-subtitle mb-2">
+                                Domain: <?php echo htmlspecialchars($paket['domain']); ?>
+                            </h6>
+                            <p class="card-text">
+                                Status: 
+                                <span class="<?php echo $paket['status'] === 'active' ? 'status-active' : 'status-expired'; ?>">
+                                    <?php echo ucfirst(htmlspecialchars($paket['status'])); ?>
+                                </span>
+                            </p>
+                            <p class="card-text">
+                                Expires: <?php echo date('d M Y', strtotime($paket['expired_at'])); ?>
+                            </p>
+                            <div class="mt-3">
+                                <a href="/paket/details?id=<?php echo $paket['id']; ?>" class="card-link">View Details</a>
+                                <?php if ($paket['status'] === 'active'): ?>
+                                    <a href="/paket/manage?id=<?php echo $paket['id']; ?>" class="card-link">Manage</a>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Card title</h4>
-                    <h6 class="card-subtitle text-muted">Support card subtitle</h6>
-                    <p class="card-text">Some quick example text to build on the card title.</p>
-                    <a href="#" class="card-link">Link</a>
-                    <a href="#" class="card-link">Second link</a>
-                </div>
-            </div>
-        </div>
+        <?php endif; ?>
     </div>
 </div>

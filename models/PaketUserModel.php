@@ -1,5 +1,6 @@
 <?php
 // File: models/PaketUserModel.php
+include dirname(__DIR__) . '/services/services.php';
 
 class PaketUserModel
 {
