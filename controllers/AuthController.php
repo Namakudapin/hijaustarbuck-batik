@@ -23,7 +23,6 @@ class AuthController {
         $user = $this->authModel->loginUser($email, $password);
 
         if ($user) {
-            session_start();
             $_SESSION['user'] = $user;
             $_SESSION['success'] = "Login successful!";
             header('Location: views/service/service.php');

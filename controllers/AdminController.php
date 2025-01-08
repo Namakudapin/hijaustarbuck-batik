@@ -20,18 +20,32 @@ class AdminController
             session_start();
             $_SESSION['admin_id'] = $admin['id'];
             $_SESSION['admin_email'] = $admin['email'];
-            $_SESSION['admin_username'] = $admin['username'];
-            header('Location: ../');
+            // Remove the line for setting the username in session
+            header('Location: /admin/views/dashboard/dashboard.php');
             exit();
         } else {
             return "Email atau Password salah!";
         }
     }
 
-    public function register($email, $username, $password, $password_confirm)
+
+    public function register()
     {
+        // Ambil data dari POST
+        $email = $_POST['email'] ?? '';
+        $username = $_POST['username'] ?? '';
+        $password = $_POST['password'] ?? '';
+        $password_confirm = $_POST['password_confirm'] ?? '';
+
+        // Validasi dan proses pendaftaran
         $message = $this->adminModel->registerAdmin($email, $username, $password, $password_confirm);
-        return $message;
+
+        // Berikan feedback kepada user
+        echo "<script>alert('$message');</script>";
+
+        if ($message === "Pendaftaran berhasil, silakan login!") {
+            echo "<script>window.location.href = '/views/login/login.php';</script>";
+        }
     }
 
     public function logout()
