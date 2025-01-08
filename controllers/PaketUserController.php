@@ -49,35 +49,29 @@ class PaketUserController
         }
     }
 
-    // Get Paket Users by User ID
     public function getPaketUsersByUserId()
     {
+        session_start();
         $user_id = $_SESSION['user_id'] ?? null;
-        
+
         if (!$user_id) {
-            echo "Debug: No user_id found in session";
-            return json_encode([]);
+            return json_encode(["error" => "User not logged in."]);
         }
-    
+
+        // Fetch data from model
         $result = $this->paketUserModel->getPaketUserByUserId($user_id);
-        
-        // Debug: Print the SQL error if any
+
+        // Check for errors in query execution
         if (!$result) {
-            echo "MySQL Error: " . mysqli_error($GLOBALS['conn']);
+            return json_encode(["error" => "Database query failed."]);
         }
-        
-        if ($result && mysqli_num_rows($result) > 0) {
-            $paketUsers = [];
-            while ($row = mysqli_fetch_assoc($result)) {
-                $paketUsers[] = $row;
-            }
-            // Debug: Print the data
-            echo "Debug: Found " . count($paketUsers) . " records";
-            return json_encode($paketUsers);
-        } else {
-            echo "Debug: No records found";
-            return json_encode([]);
+
+        $paketUsers = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $paketUsers[] = $row;
         }
+
+        return json_encode($paketUsers);
     }
 
     // Update Paket User
