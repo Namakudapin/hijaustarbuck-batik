@@ -1,5 +1,7 @@
 <?php
 //File : models/PaketModel.php
+include dirname(__DIR__) . '/services/services.php';
+
 
 class PaketModel
 {

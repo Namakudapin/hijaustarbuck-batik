@@ -40,14 +40,20 @@ if ($response !== null) {
 
     .card {
         margin: 10px;
-        background-color: #5E686D; 
-        color: white; 
-        border: none; 
+        background-color: #5E686D;
+        color: white;
+        border: none;
         flex: 1 1 calc(33.333% - 20px);
         max-width: calc(33.333% - 20px);
+        border-radius: 12px; /* Added border radius */
+        padding: 20px; /* Added padding */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better aesthetics */
     }
 
-    .card-title, .card-subtitle, .card-text, .card-link {
+    .card-title,
+    .card-subtitle,
+    .card-text,
+    .card-link {
         font-family: 'Poppins', sans-serif;
     }
 
@@ -57,6 +63,10 @@ if ($response !== null) {
 
     .card-link:hover {
         color: #D1D5DB;
+    }
+
+    .card-text {
+        margin-bottom: 10px; /* Added spacing between text elements */
     }
 
     .row {
@@ -84,6 +94,7 @@ if ($response !== null) {
     }
 </style>
 
+
 <div class="page">
     <div class="container py-5">
         <?php if (empty($paketUsers)): ?>
@@ -109,12 +120,7 @@ if ($response !== null) {
                             <p class="card-text">
                                 Expires: <?php echo date('d M Y', strtotime($paket['expired_at'])); ?>
                             </p>
-                            <div class="mt-3">
-                                <a href="/paket/details?id=<?php echo $paket['id']; ?>" class="card-link">View Details</a>
-                                <?php if ($paket['status'] === 'active'): ?>
-                                    <a href="/paket/manage?id=<?php echo $paket['id']; ?>" class="card-link">Manage</a>
-                                <?php endif; ?>
-                            </div>
+                            
                         </div>
                     </div>
                 <?php endforeach; ?>

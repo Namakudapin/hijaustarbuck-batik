@@ -1,13 +1,16 @@
 <?php
 //File: models/CheckoutModel.php
+include dirname(__DIR__) . '/services/services.php';
+
 
 class CheckoutModel{
 
-    public function createCheckout($user_id, $paket_id, $email, $created_at, $updated_at){
+    public function createCheckout($user_id, $paket_id, $email, $transfer_proof, $created_at, $updated_at) {
         global $conn;
-        $query = "INSERT INTO checkouts (user_id, paket_id, email, created_at, updated_at) VALUES (?, ?, ?, ?, ?)";
+        $query = "INSERT INTO checkouts (user_id, paket_id, email, transfer_proof, created_at, updated_at) 
+                  VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, "iisss", $user_id, $paket_id, $email, $created_at, $updated_at);
+        mysqli_stmt_bind_param($stmt, "iissss", $user_id, $paket_id, $email, $transfer_proof, $created_at, $updated_at);
         return mysqli_stmt_execute($stmt);
     }
 
@@ -20,6 +23,8 @@ class CheckoutModel{
         $result = mysqli_stmt_get_result($stmt);
         return $result;
     }
+
+    
 
     public function getCheckoutByUserId($user_id){
         global $conn;
