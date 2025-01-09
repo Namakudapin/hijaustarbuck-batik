@@ -26,24 +26,26 @@
 
 <script>
     document.getElementById('addArticleForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const formData = new FormData(this);
+    e.preventDefault();
+    const formData = new FormData(this);
 
-        fetch('/../../../controllers/NewsController.php', {
-            method: 'POST',
-            body: formData,
-        })
+    fetch('/../../../controllers/PaketController.php?action=store', {
+        method: 'POST',
+        body: formData,
+    })
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                alert('Artikel berhasil ditambahkan!');
+                alert(data.message);
                 location.reload();
             } else {
-                alert('Gagal menambahkan artikel: ' + data.message);
+                alert('Error: ' + data.message);
             }
         })
         .catch(error => {
-            alert('Terjadi kesalahan. Silakan coba lagi.');
+            console.error('Error:', error);
+            alert('Terjadi kesalahan jaringan. Silakan coba lagi.');
         });
-    });
+});
+
 </script>
