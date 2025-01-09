@@ -34,6 +34,7 @@ class PaketController
         return null;
     }
 
+
     public function store()
     {
         try {
@@ -91,6 +92,7 @@ class PaketController
             error_log("Paket Creation Error: " . $e->getMessage());
             die($e->getMessage());
         }
+
     }
 
     public function update($id)
