@@ -12,19 +12,17 @@ function sendEmail($to, $subject, $message) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'fatihabdurahman28@gmail.com'; // Ganti dengan email Gmail Anda
+        $mail->Username = 'fatihabdurahman28@gmail.com'; 
         $mail->Password = 'urqv zusx dwwq fjuh'; 
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        // Pengaturan email
-        $mail->setFrom('fatihabdurahman28@gmail.com', 'Post Development'); // Ganti dengan nama Anda
+        $mail->setFrom('fatihabdurahman28@gmail.com', 'Post Development'); 
         $mail->addAddress($to);
         $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body = $message;
 
-        // Kirim email
         $mail->send();
         return true;
     } catch (Exception $e) {
