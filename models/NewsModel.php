@@ -20,11 +20,17 @@
             return $result;
         }
 
-        public function createNews($title, $subtitle, $content, $image, $created_at, $updated_at){
+        public function createNews($title, $subtitle, $content, $image, $created_at, $updated_at)
+        {
             global $conn;
-            $query = "INSERT INTO news (title, subtitle, content, image, created_at, updated_at) VALUES ('$title', '$subtitle', '$content', '$image', '$created_at', '$updated_at')";
-            return mysqli_query($conn, $query);
+        
+            $query = "INSERT INTO news (title, subtitle, content, image, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($conn, $query);
+            mysqli_stmt_bind_param($stmt, 'ssssss', $title, $subtitle, $content, $image, $created_at, $updated_at);
+        
+            return mysqli_stmt_execute($stmt);
         }
+        
 
         public function updateNews($id, $title, $subtitle, $content, $image, $updated_at){
             global $conn;

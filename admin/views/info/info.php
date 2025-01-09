@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../.././components/sidebar.php';
 require_once __DIR__ . '/../../../controllers/NewsController.php';
+include __DIR__ . '/addinfo.php'; 
 ?>
 
 <!DOCTYPE html>
@@ -11,90 +12,13 @@ require_once __DIR__ . '/../../../controllers/NewsController.php';
     <title>News List</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/admin/assets/css/info/info.css">
-    <!-- CSS untuk modal -->
-    <style>
-        /* Modal background */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.4);
-        }
-
-        /* Modal content */
-        .modal-content {
-            background-color: #fff;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 50%;
-        }
-
-        /* Close button */
-        .close-btn {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close-btn:hover,
-        .close-btn:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        /* Form styling */
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .btn-submit {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        .btn-submit:hover {
-            background-color: #45a049;
-        }
-
-        /* Button for Add Article */
-        .btn-tambah {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .btn-tambah:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <link rel="stylesheet" href="/admin/assets/css/info/modalinfo.css">
+    <link rel="stylesheet" href="/admin/assets/css/modal.css">
     <script>
-        // Script untuk menampilkan modal saat tombol klik
         function showModal() {
             document.getElementById('addArticleModal').style.display = 'block';
         }
 
-        // Script untuk menutup modal
         function closeModal() {
             document.getElementById('addArticleModal').style.display = 'none';
         }
@@ -107,10 +31,8 @@ require_once __DIR__ . '/../../../controllers/NewsController.php';
                 <div class="articles-container">
                     <div class="articles-header">
                         <h1 class="articles-title">Artikel Terbaru</h1>
-                        <!-- Tombol Tambah Artikel -->
                         <button class="btn-tambah" onclick="showModal()">Tambah Artikel</button>
                     </div>
-
                     <div class="articles-wrapper">
                         <?php
                         $newsController = new NewsController();
@@ -146,29 +68,6 @@ require_once __DIR__ . '/../../../controllers/NewsController.php';
                     </div>
                 </div>
             </section>
-        </div>
-    </div>
-
-    <!-- Modal untuk tambah artikel -->
-    <div id="addArticleModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2>Tambah Artikel</h2>
-            <form>
-                <div class="form-group">
-                    <label for="title">Judul:</label>
-                    <input type="text" id="title" name="title" placeholder="Masukkan Judul Artikel">
-                </div>
-                <div class="form-group">
-                    <label for="subtitle">Subjudul:</label>
-                    <input type="text" id="subtitle" name="subtitle" placeholder="Masukkan Subjudul Artikel">
-                </div>
-                <div class="form-group">
-                    <label for="content">Konten:</label>
-                    <textarea id="content" name="content" placeholder="Masukkan Konten Artikel"></textarea>
-                </div>
-                <button type="submit" class="btn-submit">Simpan Artikel</button>
-            </form>
         </div>
     </div>
 </body>

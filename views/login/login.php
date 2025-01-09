@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="links">
                 Belum mempunyai akun? <a href="/views/register/register.php">Daftar</a><br>
-                Login sebagai admin? <a href="/admin/views/pages/login/login.php">Klik di sini</a>
+                Login sebagai admin? <a href="/admin/views/login/login.php">Klik di sini</a>
             </div>
         </form>
 
