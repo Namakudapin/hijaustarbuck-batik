@@ -38,11 +38,17 @@ class NewsController
     {
         header('Content-Type: application/json');
     
-        $title = $_POST['title'];
-        $subtitle = $_POST['subtitle'];
-        $content = $_POST['content'];
+        // Validate inputs
+        $title = trim($_POST['title'] ?? '');
+        $subtitle = trim($_POST['subtitle'] ?? '');
+        $content = trim($_POST['content'] ?? '');
         $created_at = date('Y-m-d H:i:s');
         $updated_at = $created_at;
+    
+        if (empty($title) || empty($subtitle) || empty($content)) {
+            echo json_encode(['status' => 'error', 'message' => 'Semua field wajib diisi.']);
+            return;
+        }
     
         // Handle image upload
         if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
@@ -50,6 +56,14 @@ class NewsController
             $fileName = uniqid() . '_' . basename($_FILES['image']['name']);
             $uploadFile = $uploadDir . $fileName;
     
+            // Validate file type
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (!in_array($_FILES['image']['type'], $allowedTypes)) {
+                echo json_encode(['status' => 'error', 'message' => 'Format file tidak valid.']);
+                return;
+            }
+    
+            // Move uploaded file
             if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
                 $imagePath = 'public/image-news/' . $fileName;
             } else {
@@ -61,14 +75,15 @@ class NewsController
             return;
         }
     
+        // Save news data
         if ($this->newsModel->createNews($title, $subtitle, $content, $imagePath, $created_at, $updated_at)) {
             echo json_encode(['status' => 'success', 'message' => 'Artikel berhasil ditambahkan!']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Gagal menambahkan artikel.']);
         }
     }
+    
 
-    // Update an existing news
     public function update($id)
     {
         $title = $_POST['title'];
