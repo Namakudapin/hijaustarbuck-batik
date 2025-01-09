@@ -14,6 +14,7 @@ class PaketController
 
     public function index()
     {
+
         $paket = $this->paketModel->Getall();
         return $paket;
     }
