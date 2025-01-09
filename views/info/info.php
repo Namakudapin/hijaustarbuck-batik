@@ -108,6 +108,7 @@ require_once __DIR__ . '/../../controllers/NewsController.php';
             font-size: 0.875rem;
             margin-bottom: 0.75rem;
         }
+        
 
         .no-articles {
             width: 100%;
@@ -163,20 +164,24 @@ require_once __DIR__ . '/../../controllers/NewsController.php';
                         if ($news && count($news) > 0) {
                             foreach ($news as $article) {
                         ?>
-                                <article class="article-card">
-                                    <div class="article-image">
-                                        <img src="/<?php echo htmlspecialchars($article['image']); ?>" 
-                                             alt="<?php echo htmlspecialchars($article['title']); ?>"
-                                             onerror="this.src='/assets/image/bat.jpg'">
-                                    </div>
-                                    <div class="article-content">
-                                        <h3 class="article-title"><?php echo htmlspecialchars($article['title']); ?></h3>
-                                        <p class="article-subtitle"><?php echo htmlspecialchars($article['subtitle']); ?></p>
-                                        <div class="article-meta">
-                                            <p class="article-date">Dipublikasikan: <?php echo date('d M Y', strtotime($article['created_at'])); ?></p>
-                                        </div>
-                                    </div>
-                                </article>
+                        <article class="article-card">
+    <a href="detaill.php?id=<?php echo urlencode($article['id']); ?>" style="text-decoration: none; color: inherit;">
+        <div class="article-image">
+            <img src="/<?php echo htmlspecialchars($article['image']); ?>" 
+                 alt="<?php echo htmlspecialchars($article['title']); ?>" 
+                 onerror="this.src='/assets/image/bat.jpg'">
+        </div>
+        <div class="article-content">
+            <h3 class="article-title"><?php echo htmlspecialchars($article['title']); ?></h3>
+            <p class="article-subtitle"><?php echo htmlspecialchars($article['subtitle']); ?></p>
+            <div class="article-meta">
+                <p class="article-date">Dipublikasikan: <?php echo date('d M Y', strtotime($article['created_at'])); ?></p>
+            </div>
+        </div>
+    </a>
+</article>
+
+
                         <?php
                             }
                         } else {

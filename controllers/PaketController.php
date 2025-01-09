@@ -14,13 +14,23 @@ class PaketController
 
     public function index()
     {
-        $this->paketModel->Getall();
-        include dirname(__DIR__) . '/';
+
+        $paket = $this->paketModel->Getall();
+        return $paket;
     }
 
     public function create()
     {
         include dirname(__DIR__) . '/';
+    }
+
+    public function getPaketById($id)
+    {
+        $result = $this->paketModel->GetById($id);
+        if ($result) {
+            return mysqli_fetch_assoc($result);
+        }
+        return null;
     }
 
     public function store()

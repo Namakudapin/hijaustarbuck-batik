@@ -23,6 +23,8 @@ class CheckoutModel{
         return $result;
     }
 
+    
+
     public function getCheckoutByUserId($user_id){
         global $conn;
         $query = "SELECT * FROM checkouts WHERE user_id = ?";

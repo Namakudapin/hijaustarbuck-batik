@@ -39,7 +39,7 @@
         <li><a href="/views/service/service.php">Service</a></li>
         <li><a href="/views/billing/billing.php">Billing</a></li>
         <li><a href="/views/info/info.php">Info</a></li>
-        <li><a href="#">Upgrade</a></li>
+        <li><a href="/views/buy/beli.php">Upgrade</a></li>
         <li><a href="#">Log Out</a></li>
     </ul>
 </div>

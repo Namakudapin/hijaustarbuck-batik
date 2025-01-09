@@ -22,17 +22,15 @@ class NewsController
         }
         return json_encode($data); // Return the JSON-encoded string
     }
-    
-    // Get news by ID
+
     public function show($id)
-    {
-        $news = $this->newsModel->getNewsById($id);
-        if ($row = mysqli_fetch_assoc($news)) {
-            echo json_encode($row);
-        } else {
-            echo "News not found!";
-        }
+{
+    $news = $this->newsModel->getNewsById($id);
+    if ($row = mysqli_fetch_assoc($news)) {
+        return json_encode($row); // Return the JSON-encoded string
     }
+    return null; // Return null if not found
+}
 
     // Create a new news
     public function store()

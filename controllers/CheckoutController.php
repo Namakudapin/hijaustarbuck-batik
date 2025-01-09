@@ -1,6 +1,6 @@
 <?php
-include dirname(__DIR__) . '/models/CheckoutModel.php';
-include dirname(__DIR__) . '/services/services.php';
+require_once dirname(__DIR__) . '/models/CheckoutModel.php';
+require_once dirname(__DIR__) . '/services/services.php'; 
 
 class CheckoutController {
     private $checkoutModel;
@@ -8,8 +8,6 @@ class CheckoutController {
     public function __construct() {
         $this->checkoutModel = new CheckoutModel();
     }
-
-    // Create a new checkout entry
     public function createCheckout() {
         $user_id = $_POST['user_id'];
         $paket_id = $_POST['paket_id'];
@@ -18,7 +16,6 @@ class CheckoutController {
         $updated_at = $created_at;
 
         if ($this->checkoutModel->createCheckout($user_id, $paket_id, $email, $created_at, $updated_at)) {
-            // Send an email to the user upon successful checkout
             $subject = 'Checkout Confirmation';
             $message = "<h1>Thank you for your purchase!</h1><p>Your checkout has been successfully recorded.</p>";
 
@@ -32,7 +29,6 @@ class CheckoutController {
         }
     }
 
-    // Get checkout details by ID
     public function getCheckoutById() {
         $id = $_GET['id'];
         $result = $this->checkoutModel->getCheckoutById($id);
@@ -44,8 +40,6 @@ class CheckoutController {
             echo "No checkout found with the given ID.";
         }
     }
-
-    // Update checkout status
     public function updateCheckoutStatus() {
         $id = $_POST['id'];
         $status = $_POST['status'];
