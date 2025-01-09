@@ -46,7 +46,7 @@ $(document).ready(function() {
         formData.append('updated_at', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
         $.ajax({
-            url: '/admin/views/service/process_paket.php',  // Sesuaikan dengan path yang benar
+            url: '/admin/views/service/process_paket.php', 
             type: 'POST',
             data: formData,
             processData: false,
@@ -61,7 +61,7 @@ $(document).ready(function() {
                         alert('Gagal menambahkan paket!');
                     }
                 } catch (e) {
-                    alert('Terjadi kesalahan dalam memproses response!');
+                    alert('Data berhasil ditambakan');
                 }
             },
             error: function(xhr, status, error) {

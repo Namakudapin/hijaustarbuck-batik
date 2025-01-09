@@ -29,9 +29,10 @@ class PaketModel
         global $conn;
         $query = "INSERT INTO paket_domains (title, image, price, description, size, bandwidth, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, "sssssss", $title, $image, $price, $description, $size, $bandwidth, $created_at, $updated_at);
+        $stmt->bind_param('ssssssss', $title, $image, $price, $description, $size, $bandwidth, $created_at, $updated_at);
         return mysqli_stmt_execute($stmt);
     }
+    
 
     public function UpdatePaket($id, $title, $image, $price, $description, $size, $bandwidth, $updated_at)
     {
