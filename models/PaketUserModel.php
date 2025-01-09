@@ -28,12 +28,12 @@ class PaketUserModel
         if (!$result) {
             die("MySQL Error: " . mysqli_error($conn));
         }
-
+    
         return $result;
     }
 
     public function createPaketUser($user_id, $checkout_id, $title, $domain, $status, $expired_at, $created_at, $updated_at)
-    {
+       {
         global $conn;
         $query = "INSERT INTO paket_users (user_id, checkout_id, title, domain, status, expired_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conn, $query);

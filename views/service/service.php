@@ -139,7 +139,7 @@ echo "</pre>";
                     <th>Status</th>
                     <th>Expired At</th>
                     <th>Last Updated</th>
-                    <th>Actions</th>
+                 
                 </tr>
             </thead>
             <tbody>
@@ -151,10 +151,7 @@ echo "</pre>";
                             <td><?= htmlspecialchars($paket['status']); ?></td>
                             <td><?= date('d/m/Y H:i', strtotime($paket['expired_at'])); ?></td>
                             <td><?= date('d/m/Y H:i', strtotime($paket['updated_at'])); ?></td>
-                            <td>
-                                <a href="edit.php?id=<?= $paket['id']; ?>" class="action-btn">Edit</a>
-                                <button onclick="deletePaket(<?= $paket['id']; ?>)" class="action-btn">Delete</button>
-                            </td>
+                        
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -197,22 +194,4 @@ echo "</pre>";
         });
     });
 
-    function deletePaket(id) {
-        if (confirm('Are you sure you want to delete this package?')) {
-            $.ajax({
-                url: 'delete.php',
-                type: 'POST',
-                data: {
-                    id: id
-                },
-                success: function(response) {
-                    alert('Package deleted successfully!');
-                    location.reload();
-                },
-                error: function() {
-                    alert('Failed to delete package!');
-                }
-            });
-        }
-    }
 </script>
