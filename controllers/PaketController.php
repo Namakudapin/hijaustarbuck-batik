@@ -23,8 +23,7 @@ class PaketController
         include dirname(__DIR__) . '/';
     }
 
-    public function store()
-    {
+    public function store() {
         $title = $_POST['title'];
         $image = $_POST['image'];
         $price = $_POST['price'];
@@ -34,14 +33,23 @@ class PaketController
         $created_at = date('Y-m-d H:i:s');
         $updated_at = date('Y-m-d H:i:s');
 
-        $result = $this->paketModel->CreatePaket($title, $image, $price, $description, $size, $bandwidth, $created_at, $updated_at);
+        $result = $this->paketModel->CreatePaket(
+            $title,
+            $image,
+            $price,
+            $description,
+            $size,
+            $bandwidth,
+            $created_at,
+            $updated_at
+        );
 
         if ($result === true) {
-            header('Location: /');
-        } else {
-            echo "Gagal menambahkan paket!";
+            return true;
         }
+        return false;
     }
+
 
     public function edit($id)
     {

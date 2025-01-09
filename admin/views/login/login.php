@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// If admin is already logged in, redirect to the admin dashboard
 if (isset($_SESSION['admin_id'])) {
     header("Location: /admin/views/dashboard/dashboard.php");
     exit();
