@@ -1,8 +1,9 @@
 <?php
+// file: controllers/SendEmail.php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 function sendEmail($to, $subject, $message) {
     $mail = new PHPMailer(true);
