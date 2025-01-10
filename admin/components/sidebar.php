@@ -39,7 +39,7 @@
         <li><a href="/admin/views/dashboard/dashboard.php">Dashboard</a></li>
         <li><a href="/admin/views/service/service.php">Service</a></li>
         <li><a href="/admin/views/info/info.php">Info</a></li>
-        <li><a href="#">Upgrade</a></li>
+        <li><a href="/admin/views/paket/paket.php">Upgrade</a></li>
         <li><a href="#">Log Out</a></li>
     </ul>
 </div>
