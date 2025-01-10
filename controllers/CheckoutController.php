@@ -19,6 +19,12 @@ class CheckoutController
         }
     }
 
+    public function index()
+    {
+        $checkouts = $this->checkoutModel->index();
+        return $checkouts;
+    }
+
     public function createCheckout()
     {
         try {
