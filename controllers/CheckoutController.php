@@ -82,44 +82,96 @@ class CheckoutController {
     }
 
     public function updateCheckoutStatus() {
-        $id = $_POST['id'];
-        $status = $_POST['status'];
-        $updated_at = date('Y-m-d H:i:s');
-
-        if ($this->checkoutModel->updateCheckout($id, $status, $updated_at)) {
-            $result = $this->checkoutModel->getCheckoutById($id);
-            if ($result && mysqli_num_rows($result) > 0) {
-                $checkout = mysqli_fetch_assoc($result);
-                $email = $checkout['email'];
-
-                $subject = 'Checkout Status Update';
-                $message = "<h1>Checkout Status Updated</h1><p>Your checkout status has been updated to: {$status}</p>";
-
-                if (sendEmail($email, $subject, $message)) {
-                    echo "Status updated and email sent successfully!";
+        try {
+            if (!isset($_POST['id']) || !isset($_POST['status'])) {
+                throw new Exception("Invalid data received.");
+            }
+    
+            $id = intval($_POST['id']);
+            $status = trim($_POST['status']);
+            $updated_at = date('Y-m-d H:i:s');
+    
+            if ($this->checkoutModel->updateCheckout($id, $status, $updated_at)) {
+                $result = $this->checkoutModel->getCheckoutById($id);
+                if ($result && mysqli_num_rows($result) > 0) {
+                    $checkout = mysqli_fetch_assoc($result);
+                    $email = $checkout['email'];
+    
+                    $subject = 'Checkout Status Update';
+                    $message = "<h1>Checkout Status Updated</h1><p>Your checkout status has been updated to: {$status}</p>";
+    
+                    if (sendEmail($email, $subject, $message)) {
+                        echo json_encode(['success' => true, 'message' => 'Status updated and email sent successfully!']);
+                    } else {
+                        echo json_encode(['success' => true, 'message' => 'Status updated, but email failed to send.']);
+                    }
                 } else {
-                    echo "Status updated, but email failed to send.";
+                    echo json_encode(['success' => true, 'message' => 'Status updated, but email address not found.']);
                 }
             } else {
-                echo "Status updated, but email address not found.";
+                throw new Exception("Failed to update status.");
             }
-        } else {
-            echo "Failed to update status.";
+        } catch (Exception $e) {
+            error_log("Error in updateCheckoutStatus: " . $e->getMessage());
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
         }
     }
+    
 
     public function getCheckoutsByUserId() {
-        $user_id = $_GET['user_id'];
-        $result = $this->checkoutModel->getCheckoutByUserId($user_id);
-
-        if ($result && mysqli_num_rows($result) > 0) {
-            $checkouts = [];
-            while ($row = mysqli_fetch_assoc($result)) {
-                $checkouts[] = $row;
+        try {
+            if (!isset($_GET['user_id'])) {
+                throw new Exception("User ID is required.");
             }
-            echo json_encode($checkouts);
-        } else {
-            echo "No checkouts found for the given user.";
+    
+            $user_id = intval($_GET['user_id']);
+            $result = $this->checkoutModel->getCheckoutByUserId($user_id);
+    
+            if ($result && mysqli_num_rows($result) > 0) {
+                $checkouts = [];
+                require_once dirname(__DIR__) . '/models/PaketModel.php';
+                $paketModel = new PaketModel();
+    
+                while ($row = mysqli_fetch_assoc($result)) {
+                    // Fetch Paket Details by paket_id
+                    $paketData = $paketModel->GetById($row['paket_id']);
+                    $paket = mysqli_fetch_assoc($paketData);
+    
+                    // Merge Paket Name and Expired Date into Checkout Data
+                    $row['paket_name'] = $paket['title'] ?? 'Unknown Package';
+                    $row['expired_at'] = $row['expired_at'] ?? $paket['expired_at'] ?? null;
+    
+                    $checkouts[] = $row;
+                }
+    
+                echo json_encode($checkouts);
+            } else {
+                echo json_encode(['message' => 'No checkouts found for the given user.']);
+            }
+        } catch (Exception $e) {
+            error_log("Error in getCheckoutsByUserId: " . $e->getMessage());
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
         }
     }
+    
+    
+
+    public function deleteCheckout() {
+        try {
+            if (!isset($_POST['id'])) {
+                throw new Exception("Invalid ID.");
+            }
+    
+            $id = intval($_POST['id']);
+            if ($this->checkoutModel->deleteCheckout($id)) {
+                echo json_encode(['success' => true, 'message' => 'Checkout deleted successfully.']);
+            } else {
+                throw new Exception("Failed to delete checkout.");
+            }
+        } catch (Exception $e) {
+            error_log("Delete Error: " . $e->getMessage());
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
+    
 }   

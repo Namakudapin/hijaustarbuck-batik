@@ -16,6 +16,24 @@ body {
     right: 0;
 }
 
+.btn-delete {
+    background: transparent;
+    border: none;
+}
+
+.btn-delete img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.8;
+    padding-bottom: 20px;
+    transition: opacity 0.3s;
+}
+
+.btn-delete img:hover {
+    opacity: 1;
+}
+
+
 .articles-section {
     padding: 2rem;
     position: relative;

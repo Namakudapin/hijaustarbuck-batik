@@ -1,6 +1,6 @@
 <?php
-// Start session at the very beginning of the file
-session_start();
+    // Start session at the very beginning of the file
+    session_start();
 
 // Ensure user is logged in
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['user']) || empty($_SESSION['user'])) {

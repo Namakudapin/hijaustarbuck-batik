@@ -54,13 +54,43 @@ class CheckoutModel{
         return $result;
     }
 
-    public function updateCheckout($id, $status, $updated_at){
+    public function updateCheckout($id, $status, $updated_at) {
         global $conn;
         $query = "UPDATE checkouts SET status = ?, updated_at = ? WHERE id = ?";
         $stmt = mysqli_prepare($conn, $query);
+        if (!$stmt) {
+            error_log("Failed to prepare statement: " . mysqli_error($conn));
+            return false;
+        }
+    
         mysqli_stmt_bind_param($stmt, "ssi", $status, $updated_at, $id);
-        return mysqli_stmt_execute($stmt);
+        if (!mysqli_stmt_execute($stmt)) {
+            error_log("Failed to execute statement: " . mysqli_stmt_error($stmt));
+            return false;
+        }
+    
+        return true;
     }
+
+    public function deleteCheckout($id) {
+        global $conn;
+        $query = "DELETE FROM checkouts WHERE id = ?";
+        $stmt = mysqli_prepare($conn, $query);
+        if (!$stmt) {
+            error_log("Failed to prepare statement: " . mysqli_error($conn));
+            return false;
+        }
+    
+        mysqli_stmt_bind_param($stmt, "i", $id);
+        if (!mysqli_stmt_execute($stmt)) {
+            error_log("Failed to execute statement: " . mysqli_stmt_error($stmt));
+            return false;
+        }
+    
+        return true;
+    }
+    
+    
     
 }
 ?>
