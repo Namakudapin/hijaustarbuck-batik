@@ -23,25 +23,31 @@ $paket = $paketController->index();
         background-size: cover;
         background-repeat: repeat;
         min-height: 100vh;
-        position: relative;
-        top: 0;
-        right: 0;
     }
 
     .card-link {
-    text-decoration: none;
-    color: inherit;
-}
+        text-decoration: none;
+        color: inherit;
+    }
 
-.card {
-    background-color: #85A947;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    height: 100%;
-}
+    .card {
+        background: linear-gradient(135deg, #85A947, #5E7D34);
+        color: white;
+        
+        border: none;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        align-items: center;
+        height: 100%;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
 
     .card-title,
     .card-subtitle,
@@ -50,14 +56,43 @@ $paket = $paketController->index();
         font-family: 'Poppins', sans-serif;
     }
 
-    .card-text {
-        margin-bottom: 10px;
+    .card-image {
+        width: 100%;
+        height: 150px; /* Semua gambar memiliki tinggi yang sama */
+        object-fit: cover; /* Memastikan gambar tetap proporsional */
+        border-radius: 10px;
+        margin-bottom: 15px;
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover .card-image {
+        transform: scale(1.05);
+    }
+
+    .price {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #FFD700;
+        margin: 10px 0;
+    }
+
+    .specs {
+        display: flex;
+        justify-content: space-between;
+        margin: 15px 0;
+        font-size: 0.9rem;
+        color: #d0d0d0;
     }
 
     .row {
         display: flex;
         flex-wrap: wrap;
-        justify-content: flex-start;
+        gap: 20px;
+    }
+
+    .card h4 {
+        margin: 10px 0;
+        font-size: 1.25rem;
     }
 
     .empty-state {
@@ -69,27 +104,8 @@ $paket = $paketController->index();
         margin: 2rem auto;
         max-width: 600px;
     }
-
-    .card-image {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 8px;
-        margin-bottom: 15px;
-    }
-
-    .price {
-        font-size: 1.25rem;
-        font-weight: bold;
-        margin: 10px 0;
-    }
-
-    .specs {
-        display: flex;
-        justify-content: space-between;
-        margin: 10px 0;
-    }
 </style>
+
 
 <div class="page">
     <div class="container py-5">

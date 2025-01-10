@@ -79,6 +79,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .catch(error => {
             console.error('Error:', error);
             alert('data berhasil di upload.');
+            closeModal();
+            header('Location: info.php');
+            exit;   
         });
     });
 </script>

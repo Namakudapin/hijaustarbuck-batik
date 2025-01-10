@@ -19,7 +19,7 @@ class PaketUserModel
         if (!$stmt) {
             die("MySQL Prepare failed: " . mysqli_error($conn));
         }
-
+ 
         mysqli_stmt_bind_param($stmt, "i", $user_id);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);

@@ -16,7 +16,6 @@ $checkouts = $checkoutController->index(); // Using the new getCheckout method
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Price</th>
                     <th>Email</th>
                     <th>Status</th>
                     <th>Transfer Proof</th>
@@ -29,14 +28,13 @@ $checkouts = $checkoutController->index(); // Using the new getCheckout method
         <?php while ($checkout = mysqli_fetch_assoc($checkouts)) : ?>
             <tr>
                 <td><?php echo htmlspecialchars($checkout['id'] ?? 'N/A'); ?></td>
-                <td>Rp <?php echo number_format($checkout['paket_price'] ?? 0, 0, ',', '.'); ?></td>
+               
                 <td><?php echo htmlspecialchars($checkout['email'] ?? 'N/A'); ?></td>
                 <td>
                     <select onchange="updateStatus(<?php echo $checkout['id']; ?>, this.value)" class="status-select">
                         <option value="pending" <?php echo ($checkout['status'] == 'pending') ? 'selected' : ''; ?>>Pending</option>
-                        <option value="processing" <?php echo ($checkout['status'] == 'processing') ? 'selected' : ''; ?>>Processing</option>
-                        <option value="completed" <?php echo ($checkout['status'] == 'completed') ? 'selected' : ''; ?>>Completed</option>
-                        <option value="cancelled" <?php echo ($checkout['status'] == 'cancelled') ? 'selected' : ''; ?>>Cancelled</option>
+                        <option value="complete" <?php echo ($checkout['status'] == 'complete') ? 'selected' : ''; ?>>Complete</option>
+                 
                     </select>
                 </td>
                 <td>
@@ -48,7 +46,6 @@ $checkouts = $checkoutController->index(); // Using the new getCheckout method
                 </td>
                 <td><?php echo date('d/m/Y H:i', strtotime($checkout['created_at'])); ?></td>
                 <td>
-                    <button onclick="viewDetails(<?php echo $checkout['id']; ?>)" class="action-btn">View</button>
                     <button onclick="deleteCheckout(<?php echo $checkout['id']; ?>)" class="action-btn">Delete</button>
                 </td>
             </tr>
@@ -98,7 +95,7 @@ $checkouts = $checkoutController->index(); // Using the new getCheckout method
     function updateStatus(id, status) {
         if (confirm('Are you sure you want to update this status?')) {
             $.ajax({
-                url: 'update_status.php',
+                url: 'update_checkout.php',
                 type: 'POST',
                 data: { 
                     id: id,
@@ -119,19 +116,29 @@ $checkouts = $checkoutController->index(); // Using the new getCheckout method
     }
 
     function deleteCheckout(id) {
-        if (confirm('Are you sure you want to delete this checkout?')) {
-            $.ajax({
-                url: 'delete.php',
-                type: 'POST',
-                data: { id: id },
-                success: function(response) {
-                    alert('Checkout deleted successfully!');
-                    location.reload();
-                },
-                error: function() {
-                    alert('Failed to delete checkout!');
+    if (confirm('Are you sure you want to delete this checkout?')) {
+        $.ajax({
+            url: 'delete.php',
+            type: 'POST',
+            data: { id: id },
+            success: function(response) {
+                try {
+                    let result = JSON.parse(response);
+                    if (result.success) {
+                        alert(result.message);
+                        location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                } catch (error) {
+                    alert('Unexpected error occurred.');
                 }
-            });
-        }
+            },
+            error: function() {
+                alert('Failed to delete checkout!');
+            }
+        });
     }
+}
+
 </script>
