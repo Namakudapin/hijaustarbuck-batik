@@ -32,11 +32,12 @@ class NewsController
     {
         $news = $this->newsModel->getNewsById($id);
         if ($row = mysqli_fetch_assoc($news)) {
-            echo json_encode($row);
+            return json_encode($row); // Kembalikan data JSON
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Artikel tidak ditemukan!']);
+            return json_encode(['status' => 'error', 'message' => 'Artikel tidak ditemukan!']);
         }
     }
+    
 
     public function store()
     {

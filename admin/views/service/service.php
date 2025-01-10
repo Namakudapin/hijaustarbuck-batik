@@ -1,6 +1,9 @@
 <?php 
 require_once __DIR__ . '/../.././components/sidebar.php';
+require_once __DIR__ . '/../../../controllers/PaketController.php';
 
+$paketController = new PaketController();
+$paketUsers = $paketController->index(); // Fetch semua paket dari controller
 ?>
 
 <link rel="stylesheet" href="/admin/assets/css/dashboard/dashboard.css">
@@ -15,28 +18,35 @@ require_once __DIR__ . '/../.././components/sidebar.php';
             <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Domain</th>
-                    <th>Status</th>
-                    <th>Expired At</th>
+                    <th>price</th>
+                    <th>description</th>
+                    <th>bandwidth</th>
                     <th>Last Updated</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($paketUsers as $paket) : ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($paket['title']); ?></td>
-                        <td><?php echo htmlspecialchars($paket['domain']); ?></td>
-                        <td><?php echo htmlspecialchars($paket['status']); ?></td>
-                        <td><?php echo date('d/m/Y H:i', strtotime($paket['expired_at'])); ?></td>
-                        <td><?php echo date('d/m/Y H:i', strtotime($paket['updated_at'])); ?></td>
-                        <td>
-                            <a href="edit.php?id=<?php echo $paket['id']; ?>" class="action-btn">Edit</a>
-                            <button onclick="deletePaket(<?php echo $paket['id']; ?>)" class="action-btn">Delete</button>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
+    <?php if ($paketUsers && mysqli_num_rows($paketUsers) > 0) : ?>
+        <?php while ($paket = mysqli_fetch_assoc($paketUsers)) : ?>
+            <tr>
+                <td><?php echo htmlspecialchars($paket['title'] ?? 'N/A'); ?></td>
+                <td><?php echo htmlspecialchars($paket['price'] ?? 'N/A'); ?></td>
+                <td><?php echo htmlspecialchars($paket['description'] ?? 'N/A'); ?></td>
+                <td><?php echo htmlspecialchars($paket['bandwidth'] ?? 'N/A'); ?></td>
+                <td><?php echo !empty($paket['updated_at']) ? date('d/m/Y H:i', strtotime($paket['updated_at'])) : 'N/A'; ?></td>
+                <td>
+                    <a href="edit.php?id=<?php echo $paket['id']; ?>" class="action-btn">Edit</a>
+                    <button onclick="deletePaket(<?php echo $paket['id']; ?>)" class="action-btn">Delete</button>
+                </td>
+            </tr>
+        <?php endwhile; ?>
+    <?php else : ?>
+        <tr>
+            <td colspan="6">Tidak ada data paket tersedia.</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
+
         </table>
     </div>
 </div>
@@ -69,13 +79,6 @@ require_once __DIR__ . '/../.././components/sidebar.php';
                 }
             }
         });
-
-        window.onclick = function(event) {
-            const modal = document.getElementById('addPackageModal');
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        };
     });
 
     function deletePaket(id) {

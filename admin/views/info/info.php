@@ -3,7 +3,6 @@ require_once __DIR__ . '/../.././components/sidebar.php';
 require_once __DIR__ . '/../../../controllers/NewsController.php';
 include __DIR__ . '/addinfo.php'; 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,16 +34,18 @@ include __DIR__ . '/addinfo.php';
                     </div>
                     <div class="articles-wrapper">
                         <?php
-                        $newsController = new NewsController();
-                        $news = json_decode($newsController->index(), true);
-                        
-                        if ($news && count($news) > 0) {
-                            foreach ($news as $article) {
+                        // Tambahkan fetch data menggunakan model Anda
+                        $newsModel = new NewsModel();
+                        $news = $newsModel->getAllNews();
+
+                        if ($news && mysqli_num_rows($news) > 0) {
+                            while ($article = mysqli_fetch_assoc($news)) {
                         ?>
                                 <article class="article-card">
+                                <a href="detail.php?id=<?php echo urlencode($article['id']); ?>" style="text-decoration: none; color: inherit;">
                                     <div class="article-image">
                                         <img src="/<?php echo htmlspecialchars($article['image']); ?>" 
-                                             alt="<?php echo htmlspecialchars($article['title']); ?>"
+                                             alt="<?php echo htmlspecialchars($article['title']); ?>" 
                                              onerror="this.src='/assets/image/bat.jpg'">
                                     </div>
                                     <div class="article-content">
