@@ -5,6 +5,13 @@ include dirname(__DIR__) . '/services/services.php';
 
 class CheckoutModel{
 
+    public function  index(){
+        global $conn;
+        $query = "SELECT * FROM checkouts";
+        $result = mysqli_query($conn, $query);
+        return $result;
+    }
+
     public function createCheckout($user_id, $paket_id, $email, $transfer_proof, $created_at, $updated_at) {
         global $conn;
         $query = "INSERT INTO checkouts (user_id, paket_id, email, transfer_proof, created_at, updated_at) 
