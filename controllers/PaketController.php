@@ -20,10 +20,16 @@ class PaketController
     }
 
     public function index()
-    {
-        $paket = $this->paketModel->Getall();
-        return $paket;
+{
+    $paket = $this->paketModel->Getall();
+    
+    if (!$paket) {
+        error_log("PaketController::index - Query failed: " . mysqli_error($GLOBALS['conn']));
+        return null;
     }
+
+    return $paket;
+}
 
     public function getPaketById($id)
     {
